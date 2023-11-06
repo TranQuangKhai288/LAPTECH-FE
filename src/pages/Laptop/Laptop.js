@@ -8,10 +8,29 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import CardItem from "../../components/CardItem/CardItem";
+import { useQuery } from "@tanstack/react-query";
+import * as ProductService from "../../services/ProductService";
 import Data from "../../Data/Data";
+
 const cx = classNames.bind(styles);
 
 const Laptop = () => {
+  const fetchProductAll = async () => {
+    const res = await ProductService.getAllProduct();
+    console.log("res", res);
+    return res;
+  };
+  const { isLoading, data: products } = useQuery({
+    queryKey: ["products"],
+    queryFn: fetchProductAll,
+    retry: 3,
+    retryDelay: 1000,
+  });
+
+  console.log("data", products);
+
+  //const Data = [products.data];
+
   const NormalLaptopASUS = Data.filter((index) => {
     return index.type === "normal-laptop" && index.company === "ASUS";
   });

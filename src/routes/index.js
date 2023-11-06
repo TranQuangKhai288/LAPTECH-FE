@@ -16,8 +16,11 @@ import ProductDetail from "../pages/ProductDetail/ProductDetail";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Register/Register";
 import Nothing from "../layouts/Nothing/Nothing";
+import Admin from "../pages/Admin/Admin";
+import NotFoundPage from "../pages/NotFoundPage/NotFoundPage";
+import Profile from "../pages/Profile/Profile";
 
-const publicRoutes = [
+const routes = [
   {
     path: config.routes.login,
     component: Login,
@@ -90,8 +93,23 @@ const publicRoutes = [
     component: ProductDetail,
     layout: HeaderOnly,
   },
-]; // khoong dang nhap van xem duoc
 
-const privateRoutes = []; // phai dang nhap moi xem dc
+  {
+    path: config.routes.profile,
+    component: Profile,
+    layout: HeaderOnly,
+  },
 
-export { publicRoutes, privateRoutes };
+  {
+    path: "*",
+    component: NotFoundPage,
+  },
+  {
+    path: config.routes.admin,
+    component: Admin,
+    layout: HeaderOnly,
+    isPrivate: true,
+  },
+];
+
+export { routes };

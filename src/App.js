@@ -1,9 +1,13 @@
 import React, { Fragment, useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { publicRoutes } from "./routes";
+import { routes } from "./routes";
 import DefaultLayout from "./layouts/DefaultLayout/DefaultLayout";
 import axios from "axios";
-import { useQuery } from "@tanstack/react-query";
+import {
+  useQuery,
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 import { isJsonString } from "./utils";
 import jwt_decode from "jwt-decode";
 import { resetUser, updateUser } from "./redux/slide/userSlide";
@@ -11,6 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as UserService from "./services/UserService";
 const App = () => {
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
   useEffect(() => {
     const { storageData, decoded } = handleDecoded();
     console.log("storageData", storageData, isJsonString(storageData));
@@ -51,47 +56,45 @@ const App = () => {
   );
 
   const handleGetDetailsUser = async (id, token) => {
-    const res = await UserService.getDetailsUser(id, token);
-    console.log("res", res);
-    dispatch(updateUser({ ...res.data, token: token }));
+    try {
+      const res = await UserService.getDetailsUser(id, token);
+      console.log("res", res);
+      dispatch(updateUser({ ...res.data, token: token }));
+    } catch (err) {
+      console.log("err", err.response.status);
+    }
   };
 
-  const fetchApi = async () => {
-    const res = await axios.get(`http://localhost:5000/api/product/get-all`);
-    return res.data;
-  };
-
-  const query = useQuery({ queryKey: ["todos"], queryFn: fetchApi });
-
-  console.log("query", query);
+  const queryClient = new QueryClient();
   return (
     <Router>
-      <div className="App">
-        <Routes>
-          {publicRoutes.map((route, index) => {
-            const Page = route.component;
+      <QueryClientProvider client={queryClient}>
+        <div className="App">
+          <Routes>
+            {routes.map((route, index) => {
+              const Page = route.component;
+              let Layout = DefaultLayout;
+              if (route.layout) {
+                Layout = route.layout;
+              } else if (route.layout === null) {
+                Layout = Fragment;
+              }
 
-            let Layout = DefaultLayout;
-            if (route.layout) {
-              Layout = route.layout;
-            } else if (route.layout === null) {
-              Layout = Fragment;
-            }
-
-            return (
-              <Route
-                key={index}
-                path={route.path}
-                element={
-                  <Layout>
-                    <Page />
-                  </Layout>
-                }
-              />
-            );
-          })}
-        </Routes>
-      </div>
+              return (
+                <Route
+                  key={index}
+                  path={route.path}
+                  element={
+                    <Layout>
+                      <Page />
+                    </Layout>
+                  }
+                />
+              );
+            })}
+          </Routes>
+        </div>
+      </QueryClientProvider>
     </Router>
   );
 };

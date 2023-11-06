@@ -13,6 +13,8 @@ const routes = {
   productdetail: "/productdetail",
   login: "/login",
   register: "/register",
+  profile: "/profile",
+  admin: "/system/admin",
 };
 
 export default routes;
