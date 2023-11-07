@@ -14,16 +14,17 @@ const CardItem = ({ props }) => {
       state: {
         id: props.id,
         name: props.name,
-        rate: props.rate,
+        rating: props.rating,
         price: props.price,
         image: props.image,
+        description: props.description,
       },
     });
   };
 
   const renderRate = () => {
     let result = [];
-    for (let i = 0; i < parseInt(props.rate); i++) {
+    for (let i = 0; i < parseInt(props.rating); i++) {
       result.push(<AiFillStar color="#FFCD00" size="1.5rem" key={i} />);
     }
     return result;

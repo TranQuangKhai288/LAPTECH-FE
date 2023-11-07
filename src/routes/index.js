@@ -2,7 +2,7 @@ import config from "../config";
 
 import Home from "../pages/Home/Home";
 import Order from "../pages/Order/Order";
-import cart from "../pages/Cart/cart";
+import Cart from "../pages/Cart/Cart";
 import HeaderOnly from "../layouts/HeaderOnly/HeaderOnly";
 import Laptop from "../pages/Laptop/Laptop";
 import LaptopGaming from "../pages/LaptopGaming/LaptopGaming";
@@ -43,8 +43,8 @@ const routes = [
   },
 
   {
-    path: config.routes.cart,
-    component: cart,
+    path: config.routes.Cart,
+    component: Cart,
     layout: HeaderOnly,
   },
 

@@ -98,7 +98,7 @@ const Login = () => {
   };
 
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx("container")}>
       <div className={cx("inner")}>
         <div className={cx("form-box-login")}>
           <h2>Login</h2>

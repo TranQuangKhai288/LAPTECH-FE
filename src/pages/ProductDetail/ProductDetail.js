@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import styles from "./ProductDetail.module.scss";
 import classNames from "classnames/bind";
@@ -13,17 +13,48 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import CardItem from "../../components/CardItem/CardItem";
 import Data from "../../Data/Data";
 
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
 const ProductDetail = (props) => {
   const location = useLocation();
+  const navigate = useNavigate();
+  const [quantity, setQuantity] = useState(1);
+
+  const id = location.state.id;
+  const name = location.state.name;
+  const price = location.state.price;
+  const srcimage = location.state.image;
+  const handleDown = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
+
+  const handleUp = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleBuy = () => {
+    navigate("/cart", {
+      replace: false,
+      state: {
+        id: id,
+        name: name,
+        price: price,
+        image: srcimage,
+        option: props.option,
+        quantity: quantity,
+      },
+    });
+  };
+
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx("container")}>
       <div className={cx("container-content")}>
         <div className={cx("container-image")}>
           <div className={cx("image")}>
-            <img src={location.state.image} alt="linkien" />
+            <img src={srcimage} alt="linkien" />
           </div>
           <div className={cx("list-image")}>
             <img src={linkien} alt="linkien" />
@@ -36,7 +67,7 @@ const ProductDetail = (props) => {
         <div className={cx("container-info")}>
           <div className={cx("base-info")}>
             <div className={cx("name")}>
-              <p>{location.state.name}</p>
+              <p>{name}</p>
             </div>
             <div className={cx("rate")}>
               <p style={{ display: "flex", alignItems: "center" }}>
@@ -52,7 +83,7 @@ const ProductDetail = (props) => {
               </p>
             </div>
             <div className={cx("price")}>
-              <p>{location.state.price}</p>
+              <p>{price}</p>
             </div>
           </div>
           <div className={cx("option-info")}>
@@ -62,13 +93,13 @@ const ProductDetail = (props) => {
           <div className={cx("quantity")}>
             <p>Số lượng</p>
             <div className={cx("quantity-wrapper")}>
-              <button>-</button>
-              <p>1</p>
-              <button>+</button>
+              <button onClick={handleDown}>-</button>
+              <p>{quantity}</p>
+              <button onClick={handleUp}>+</button>
             </div>
           </div>
 
-          <div className={cx("buy")}>
+          <div className={cx("buy")} onClick={handleBuy}>
             <p
               style={{
                 color: "#fff",
@@ -98,7 +129,7 @@ const ProductDetail = (props) => {
       <div className={cx("container-description")}>
         <p style={{ fontSize: "18px" }}>Mô tả sản phẩm</p>
         <div className={cx("description")}>
-          <p>Mô tả sản phẩm này:</p>
+          <p>{location.state.description}</p>
         </div>
       </div>
 

@@ -89,7 +89,6 @@ const Home = () => {
               </Swiper>
             </div>
           </div>
-
           <div className={cx("content-hot-product")}>
             <p>PC Gaming bán chạy</p>
             <div className={cx("items-wrapper")}>
@@ -102,7 +101,6 @@ const Home = () => {
               </Swiper>
             </div>
           </div>
-
           <div className={cx("content-hot-product")}>
             <p>Laptop văn phòng bán chạy</p>
             <div className={cx("items-wrapper")}>
@@ -115,7 +113,6 @@ const Home = () => {
               </Swiper>
             </div>
           </div>
-
           <div className={cx("content-hot-product")}>
             <p>Laptop Gaming bán chạy</p>
             <div className={cx("items-wrapper")}>
