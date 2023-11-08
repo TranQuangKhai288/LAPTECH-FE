@@ -8,16 +8,28 @@ import {
 import styles from "./Admin.module.scss";
 import classNames from "classnames/bind";
 import { Menu } from "antd";
-import User from "./Component/User/User";
+import AdminUser from "./Component/User/User";
 import Product from "./Component/Product/Product";
 const cx = classNames.bind(styles);
 
 const Admin = () => {
   const [keySelected, setKeySelected] = useState("");
   const items = [
-    getItem("Người dùng", "user", <UserOutlined />),
-    getItem("Sản phẩm", "product", <AppstoreOutlined />),
-    getItem("Đơn hàng", "order", <ShoppingCartOutlined />),
+    getItem(
+      "Người dùng",
+      "user",
+      <UserOutlined style={{ fontSize: "24px" }} />
+    ),
+    getItem(
+      "Sản phẩm",
+      "product",
+      <AppstoreOutlined style={{ fontSize: "24px" }} />
+    ),
+    getItem(
+      "Đơn hàng",
+      "order",
+      <ShoppingCartOutlined style={{ fontSize: "24px" }} />
+    ),
   ];
   const rootSubmenuKeys = ["user", "product", "order"];
   const handleOnClick = ({ key }) => {
@@ -27,7 +39,7 @@ const Admin = () => {
   const renderPage = (key) => {
     switch (key) {
       case "user":
-        return <User />;
+        return <AdminUser />;
       case "product":
         return <Product />;
       case "order":
@@ -40,17 +52,20 @@ const Admin = () => {
   console.log("keySelected", keySelected);
   return (
     <div className={cx("container")}>
-      <Menu
-        mode="inline"
-        style={{
-          left: 0,
-          width: 256,
-          height: "100vh",
-          borderRight: "2px solid #f0f0f0",
-        }}
-        items={items}
-        onClick={handleOnClick}
-      />
+      <div>
+        <Menu
+          mode="inline"
+          style={{
+            left: 0,
+            width: 256,
+            height: "100vh",
+            borderRight: "2px solid #f0f0f0",
+            fontSize: "18px",
+          }}
+          items={items}
+          onClick={handleOnClick}
+        />
+      </div>
       <div className={cx("content")}>{renderPage(keySelected)}</div>
     </div>
   );
