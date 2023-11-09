@@ -4,6 +4,7 @@ import classNames from "classnames/bind";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const cx = classNames.bind(styles);
+
 const Cart = () => {
   const location = useLocation();
   const navigate = useNavigate();
