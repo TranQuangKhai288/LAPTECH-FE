@@ -29,14 +29,6 @@ const Home = () => {
       console.error("Error fetching data:", error);
     }
   };
-
-  // const { isLoading, data: products } = useQuery({
-  //   queryKey: ["products"],
-  //   queryFn: fetchProductAll,
-  //   retry: 3,
-  //   retryDelay: 1000,
-  // });
-
   useEffect(() => {
     const fetchData = async () => {
       try {

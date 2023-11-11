@@ -3,7 +3,7 @@ import styles from "./Product.module.scss";
 import classNames from "classnames/bind";
 import * as ProductService from "../../../../services/ProductService";
 import { useMutationHook } from "../../../../hooks/useMutationHook";
-
+import * as AiIcons from "react-icons/ai";
 import { getBase64 } from "../../../../utils";
 import { Modal, Table } from "antd";
 import { Upload } from "antd";
@@ -12,61 +12,49 @@ const cx = classNames.bind(styles);
 
 const columns = [
   {
+    title: "Image",
+    dataIndex: "image",
+    render: (image) => <img src={image} width={150} alt="Uploaded Image" />,
+  },
+  {
     title: "Name",
     dataIndex: "name",
-    render: (text) => <a>{text}</a>,
+    render: (text) => <p style={{ fontWeight: "550" }}>{text}</p>,
   },
   {
-    title: "Age",
-    dataIndex: "age",
+    title: "Type",
+    dataIndex: "type",
   },
   {
-    title: "Address",
-    dataIndex: "address",
+    title: "Company",
+    dataIndex: "company",
+  },
+  {
+    title: "Price",
+    dataIndex: "price",
+  },
+  {
+    title: "CountInStock",
+    dataIndex: "countInStock",
+  },
+  {
+    title: "Rating",
+    dataIndex: "rating",
+  },
+  {
+    title: "Description",
+    dataIndex: "description",
+  },
+  {
+    title: "Action",
+    render: () => (
+      <div>
+        <AiIcons.AiFillDelete className={cx("AiIcons")} color="red" />
+        <AiIcons.AiFillEdit className={cx("AiIcons")} color="#F0E68C" />
+      </div>
+    ),
   },
 ];
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Disabled User",
-    age: 99,
-    address: "Sydney No. 1 Lake Park",
-  },
-];
-
-const rowSelection = {
-  onChange: (selectedRowKeys, selectedRows) => {
-    console.log(
-      `selectedRowKeys: ${selectedRowKeys}`,
-      "selectedRows: ",
-      selectedRows
-    );
-  },
-  getCheckboxProps: (record) => ({
-    disabled: record.name === "Disabled User",
-    // Column configuration not to be checked
-    name: record.name,
-  }),
-};
-
 const listType = [
   {
     id: 1,
@@ -109,9 +97,11 @@ const listCompany = [
 ];
 
 const Product = () => {
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDropdownType, setIsDropdownType] = useState(false);
   const [isDropdownCompany, setIsDropdownCompany] = useState(false);
+  const [Data, setData] = useState([]);
   const [stateProduct, setStateProduct] = useState({
     name: "",
     type: "",
@@ -136,8 +126,44 @@ const Product = () => {
     } else if (isSuccess && mutation.data.status === "ERR") {
       alert(mutation.data.message);
       console.log("mutation.data.status:", mutation.data);
+    } else if (isError) {
+      alert(mutation.data);
+      console.log("ERR mutation.data:", mutation.data);
+      console.log("ERR mutationERR:", mutation.error);
     }
   }, [isSuccess, isError]);
+
+  const fetchProductAll = async () => {
+    try {
+      const res = await ProductService.getAllProduct();
+      console.log("Data fetched:", res);
+      return res;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const result = await fetchProductAll();
+        setData(result.data);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    fetchData();
+    console.log("Data:", Data);
+  }, []);
+
+  const onSelectChange = (newSelectedRowKeys) => {
+    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
 
   const handleOk = () => {
     mutation.mutate(stateProduct);
@@ -179,12 +205,9 @@ const Product = () => {
       </div>
       <div className={cx("content")}>
         <Table
-          rowSelection={{
-            type: "checkbox",
-            ...rowSelection,
-          }}
+          rowSelection={rowSelection}
           columns={columns}
-          dataSource={data}
+          dataSource={Data}
         />
       </div>
       <Modal
