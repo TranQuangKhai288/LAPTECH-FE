@@ -14,7 +14,7 @@ const cx = classNames.bind(styles);
 const Product = () => {
   const [selectedRowKeys, setSelectedRowKeys] = useState([]);
   const [isModalOpenAddProduct, setIsModalOpenAddProduct] = useState(false);
-  const [rowSelected, setRowSelected] = useState([]);
+  const [rowSelected, setRowSelected] = useState("");
   const [isModalOpenEditProduct, setIsModalOpenEditProduct] = useState(false);
   const [isDropdownType, setIsDropdownType] = useState(false);
   const [isDropdownCompany, setIsDropdownCompany] = useState(false);
@@ -143,7 +143,12 @@ const Product = () => {
   ];
 
   const { isError, isSuccess } = mutation;
-  const { isSuccess: isSuccessUpdated } = mutationUpdate;
+  const {
+    data: dataUpdated,
+    isLoading: isLoadingUpdated,
+    isSuccess: isSuccessUpdated,
+    isError: isErrorUpdated,
+  } = mutationUpdate;
   // add product
   useEffect(() => {
     if (isSuccess && mutation.data.status === "OK") {
@@ -243,24 +248,50 @@ const Product = () => {
   //Edit product
 
   const handleDetailProduct = () => {
+    fetchGetDetailsProduct();
     setIsModalOpenEditProduct(true);
   };
-  const handleOkEditProduct = () => {
-    console.log("id", rowSelected._id);
-    console.log("token", user?.accessToken);
 
+  const fetchGetDetailsProduct = async (rowSelected) => {
+    try {
+      const res = await ProductService.getDetailsProduct(rowSelected);
+      if (res?.data) {
+        setStateProductDetails({
+          name: res?.data?.name,
+          type: res?.data?.type,
+          company: res?.data?.company,
+          price: res?.data?.price,
+          countInStock: res?.data?.countInStock,
+          rating: res?.data?.rating,
+          description: res?.data?.description,
+          image: res?.data?.image,
+        });
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
+  useEffect(() => {
+    if (rowSelected) {
+      fetchGetDetailsProduct(rowSelected);
+    }
+  }, [rowSelected]);
+
+  const handleOkEditProduct = () => {
     mutationUpdate.mutate({
-      id: rowSelected._id,
+      id: rowSelected,
       token: user?.accessToken,
       ...stateProductDetails,
     });
-    setIsModalOpenEditProduct(false);
-    console.log("isSuccess", isSuccessUpdated);
     if (isSuccessUpdated) {
       alert("Cập nhật thành công");
-    } else {
+      setIsModalOpenEditProduct(false);
+    } else if (isErrorUpdated) {
       alert("Cập nhật thất bại");
+      //setIsModalOpenEditProduct(false);
     }
+    //setIsModalOpenEditProduct(false);
+    //window.location.reload();
   };
   const handleCancelEditProduct = () => {
     setStateProductDetails({
@@ -282,14 +313,18 @@ const Product = () => {
     });
   };
   const handleOnChangeImageDetails = async ({ fileList }) => {
-    const file = fileList[0];
-    if (!file.url && !file.preview) {
-      file.preview = await getBase64(file.originFileObj);
+    try {
+      const file = fileList[0];
+      if (!file.url && !file.preview) {
+        file.preview = await getBase64(file.originFileObj);
+      }
+      setStateProductDetails({
+        ...stateProductDetails,
+        image: file.preview,
+      });
+    } catch (error) {
+      console.log("error", error);
     }
-    setStateProductDetails({
-      ...stateProductDetails,
-      image: file.preview,
-    });
   };
 
   return (
@@ -311,17 +346,7 @@ const Product = () => {
           onRow={(record, rowIndex) => {
             return {
               onClick: (event) => {
-                setRowSelected(record);
-                setStateProductDetails({
-                  name: record?.name,
-                  type: record?.type,
-                  company: record?.company,
-                  price: record?.price,
-                  countInStock: record?.countInStock,
-                  rating: record?.rating,
-                  description: record?.description,
-                  image: record?.image,
-                });
+                setRowSelected(record._id);
               },
             };
           }}
@@ -379,6 +404,7 @@ const Product = () => {
               <div className={cx("dropdown")}>
                 {listType.map((item, i) => (
                   <div
+                    key={item.id}
                     className={cx("dropdownitem")}
                     onClick={() => {
                       setIsDropdownType(!isDropdownType);
@@ -412,6 +438,7 @@ const Product = () => {
               <div className={cx("dropdown")}>
                 {listCompany.map((item, i) => (
                   <div
+                    key={item.id}
                     className={cx("dropdownitem")}
                     onClick={() => {
                       setIsDropdownCompany(!isDropdownCompany);
@@ -465,14 +492,7 @@ const Product = () => {
           </div>
           <div className={cx("modal-input")}>
             <p>Image</p>
-            <Upload
-              onChange={handleOnChangeImage}
-              fileList={
-                stateProduct.image
-                  ? [{ uid: "-1", name: "image.png", status: "done" }]
-                  : []
-              }
-            >
+            <Upload onChange={handleOnChangeImage}>
               {stateProduct.image ? (
                 <img
                   src={stateProduct.image}
@@ -632,11 +652,11 @@ const Product = () => {
             <p>Image</p>
             <Upload
               onChange={handleOnChangeImageDetails}
-              fileList={
-                stateProductDetails.image
-                  ? [{ uid: "-1", name: "image.png", status: "done" }]
-                  : []
-              }
+              // fileList={
+              //   stateProductDetails.image
+              //     ? [{ uid: "-1", name: "image.png", status: "done" }]
+              //     : []
+              // }
             >
               {stateProductDetails.image ? (
                 <img
