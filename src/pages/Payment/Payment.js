@@ -4,6 +4,10 @@ import classNames from "classnames/bind";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "antd";
+import {
+  apiGetPublicProvinces,
+  apiGetPublicDistricts,
+} from "../../services/AppService";
 const cx = classNames.bind(styles);
 
 const Payment = () => {
@@ -24,6 +28,12 @@ const Payment = () => {
   const [paymentMethod, setPaymentMethod] = useState(null);
   const [shippingFee, setShippingFee] = useState(0);
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [provinces, setProvinces] = useState([]);
+  const [province, setProvince] = useState();
+  const [districts, setDistricts] = useState([]);
+
+  const [district, setDistrict] = useState();
+
   const order = useSelector((state) => state.order);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -46,6 +56,33 @@ const Payment = () => {
     }
   }, [orderItems]);
   console.log("Data ", Data);
+
+  useEffect(() => {
+    const fetchPublicProvince = async () => {
+      try {
+        const res = await apiGetPublicProvinces();
+        setProvinces(res?.data?.results);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    fetchPublicProvince();
+  }, []);
+
+  useEffect(() => {
+    const fetchPublicDistrict = async () => {
+      try {
+        const res = await apiGetPublicDistricts(province);
+        setDistricts(res?.data?.results);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+    province && fetchPublicDistrict(province);
+  }, [province]);
+
+  console.log("districts", districts);
+  console.log({ province, district });
 
   const calculateTotal = () => {
     const total = Data.reduce((acc, item) => {
@@ -89,11 +126,9 @@ const Payment = () => {
       }
     }
   };
-
   const handleOpenModal = () => {
     setIsOpenModal(true);
   };
-
   const handleOk = () => {
     setIsOpenModal(false);
   };
@@ -236,7 +271,37 @@ const Payment = () => {
               />
             </div>
             <div className={cx("modal-input")}>
-              <p>Address:</p>
+              <p>Province / City:</p>
+              <select
+                value={province}
+                onChange={(e) => setProvince(e.target.value)}
+              >
+                {provinces.map((item) => {
+                  return (
+                    <option key={item?.province_id} value={item?.province_id}>
+                      {item?.province_name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className={cx("modal-input")}>
+              <p>District:</p>
+              <select
+                value={district}
+                onChange={(e) => setDistrict(e.target.value)}
+              >
+                {districts.map((item) => {
+                  return (
+                    <option key={item?.district_id} value={item?.district_id}>
+                      {item?.district_name}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+            <div className={cx("modal-input")}>
+              <p>Detail:</p>
               <input
                 type="text"
                 value={user.address}
