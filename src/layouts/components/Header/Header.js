@@ -57,8 +57,6 @@ const Header = () => {
     navigate("/");
   };
 
-  console.log("user: ", user);
-
   return (
     <header className={cx("wrapper")}>
       <div className={cx("inner")}>
