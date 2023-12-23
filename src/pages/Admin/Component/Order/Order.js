@@ -15,14 +15,16 @@ const Order = () => {
       title: "Order ID",
       dataIndex: "_id",
       render: (ID) => {
-        return <p>{ID}</p>;
+        return <p style={{ fontWeight: "550" }}>{ID}</p>;
       },
     },
 
     {
       title: "User",
       dataIndex: "shippingAddress",
-      render: (shippingAddress) => <p>{shippingAddress.fullName}</p>,
+      render: (shippingAddress) => (
+        <p style={{ fontWeight: "550" }}>{shippingAddress.fullName}</p>
+      ),
     },
 
     {
@@ -52,31 +54,35 @@ const Order = () => {
     {
       title: "Product Price",
       dataIndex: "itemsPrice",
-      render: (itemsPrice) => <p>{itemsPrice}</p>,
+      render: (itemsPrice) => <p style={{ fontWeight: "550" }}>{itemsPrice}</p>,
     },
 
     {
       title: "Ship Price",
       dataIndex: "shippingPrice",
-      render: (shippingPrice) => <p>{shippingPrice}</p>,
+      render: (shippingPrice) => (
+        <p style={{ fontWeight: "550" }}>{shippingPrice}</p>
+      ),
     },
 
     {
       title: "Total Price",
       dataIndex: "totalPrice",
-      render: (totalPrice) => <p>{totalPrice}</p>,
+      render: (totalPrice) => <p style={{ fontWeight: "550" }}>{totalPrice}</p>,
     },
 
     {
       title: "Payment Method",
       dataIndex: "paymentMethod",
-      render: (paymentMethod) => <p>{paymentMethod}</p>,
+      render: (paymentMethod) => (
+        <p style={{ fontWeight: "550" }}>{paymentMethod}</p>
+      ),
     },
 
     {
       title: "Created At",
       dataIndex: "createdAt",
-      render: (text) => <p>{text}</p>,
+      render: (text) => <p style={{ fontWeight: "550" }}>{text}</p>,
     },
 
     {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./ProductDetail.module.scss";
 import classNames from "classnames/bind";
-import linkien from "../../assets/images/linkien.webp";
 import { AiFillStar } from "react-icons/ai";
 
 import "swiper/css";
@@ -113,11 +112,11 @@ const ProductDetail = () => {
             <img src={detailProduct.image} alt="linkien" />
           </div>
           <div className={cx("list-image")}>
-            <img src={linkien} alt="linkien" />
-            <img src={linkien} alt="linkien" />
-            <img src={linkien} alt="linkien" />
-            <img src={linkien} alt="linkien" />
-            <img src={linkien} alt="linkien" />
+            <img src={detailProduct.image} alt="detailProduct1" />
+            <img src={detailProduct.image} alt="detailProduct2" />
+            <img src={detailProduct.image} alt="detailProduct3" />
+            <img src={detailProduct.image} alt="detailProduct4" />
+            <img src={detailProduct.image} alt="detailProduct5" />
           </div>
         </div>
         <div className={cx("container-info")}>

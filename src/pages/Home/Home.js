@@ -49,7 +49,6 @@ const Home = () => {
       UserService.getUserCart(user?.id, user?.access_token).then((res) => {
         dispatch(setCartProduct(res));
       });
-
     }
   }, [user?.id]);
 
@@ -61,7 +60,7 @@ const Home = () => {
       {!PData ? null : (
         <div className={cx("content")}>
           <div className={cx("content-hot-product")}>
-            <p>Sản phẩm nổi bật</p>
+            <p style={{ fontSize: "22px", color: "red" }}>Sản phẩm nổi bật</p>
             <div className={cx("items-wrapper")}>
               <Swiper spaceBetween={10} slidesPerView={6}>
                 {PData.map((products) => (
@@ -73,7 +72,7 @@ const Home = () => {
             </div>
           </div>
           <div className={cx("content-hot-product")}>
-            <p>PC bán chạy</p>
+            <p style={{ fontSize: "22px", color: "red" }}>PC bán chạy</p>
             <div className={cx("items-wrapper")}>
               <Swiper spaceBetween={10} slidesPerView={6}>
                 {PData.map((item) => (
@@ -85,7 +84,7 @@ const Home = () => {
             </div>
           </div>
           <div className={cx("content-hot-product")}>
-            <p>PC Gaming bán chạy</p>
+            <p style={{ fontSize: "22px", color: "red" }}>PC Gaming bán chạy</p>
             <div className={cx("items-wrapper")}>
               <Swiper spaceBetween={10} slidesPerView={6}>
                 {PData.map((item) => (
