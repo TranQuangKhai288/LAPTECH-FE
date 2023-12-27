@@ -4,8 +4,6 @@ import classNames from "classnames/bind";
 import { useDispatch, useSelector } from "react-redux";
 import CardCart from "../../components/CardCart/CardCart";
 import { useNavigate } from "react-router-dom";
-import { Modal } from "antd";
-import { resetState } from "../../redux/slide/orderSlide";
 
 const cx = classNames.bind(styles);
 

@@ -5,14 +5,13 @@ import {
   faMagnifyingGlass,
   faCircleXmark,
 } from "@fortawesome/free-solid-svg-icons";
-import Tippy from "@tippyjs/react/headless";
+import HeadlessTippy from "@tippyjs/react/headless";
 import { Wrapper as PopperWrapper } from "../../../components/Popper";
 import "tippy.js/dist/tippy.css";
 import classNames from "classnames/bind";
 import styles from "./Search.module.scss";
 import * as ProductService from "../../../services/ProductService";
 import { useNavigate } from "react-router-dom";
-import { useDebounce } from "../../../hooks/useDebounce";
 
 const cx = classNames.bind(styles);
 
@@ -82,13 +81,12 @@ function Search() {
     setShowResult(false);
   };
   return (
-    <Tippy
-      interactive
-      visible={showResult && searchResult.length > 0}
-      render={(attrs) => (
-        <div className={cx("search-result")} tabIndex="-1" {...attrs}>
-          <PopperWrapper>
-            <h4 className={cx("search-title")}>Products</h4>
+    <div className={cx("search-line")}>
+      <HeadlessTippy
+        interactive
+        visible={showResult && searchResult.length > 0}
+        render={(attrs) => (
+          <div className={cx("search-result")} tabIndex="-1" {...attrs}>
             {searchResult.map((result) => (
               <div
                 className={cx("wrapper")}
@@ -102,33 +100,33 @@ function Search() {
                 </div>
               </div>
             ))}
-          </PopperWrapper>
-        </div>
-      )}
-      onClickOutside={handleHideResult}
-    >
-      <div className={cx("search")}>
-        <input
-          ref={inputRef}
-          value={searchValue}
-          placeholder="Tìm sản phẩm"
-          spellCheck={false}
-          onChange={handleInputChange}
-          onFocus={() => setShowResult(true)}
-        />
-        {!!searchValue && (
-          <button className={cx("clear")} onClick={handleClear}>
-            <FontAwesomeIcon icon={faCircleXmark} />
-          </button>
+          </div>
         )}
+        onClickOutside={handleHideResult}
+      >
+        <div className={cx("search")}>
+          <input
+            ref={inputRef}
+            value={searchValue}
+            placeholder="Tìm sản phẩm"
+            spellCheck={false}
+            onChange={handleInputChange}
+            onFocus={() => setShowResult(true)}
+          />
+          {!!searchValue && (
+            <button className={cx("clear")} onClick={handleClear}>
+              <FontAwesomeIcon icon={faCircleXmark} />
+            </button>
+          )}
 
-        <span>|</span>
+          <span>|</span>
 
-        <button className={cx("search-btn")}>
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-        </button>
-      </div>
-    </Tippy>
+          <button className={cx("search-btn")}>
+            <FontAwesomeIcon icon={faMagnifyingGlass} />
+          </button>
+        </div>
+      </HeadlessTippy>
+    </div>
   );
 }
 

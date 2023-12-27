@@ -9,13 +9,17 @@ const cx = classNames.bind(styles);
 
 const Order = () => {
   const [Data, setData] = useState([]);
-
+  const numberFormat = new Intl.NumberFormat("en-US");
   const columns = [
     {
       title: "Order ID",
       dataIndex: "_id",
       render: (ID) => {
-        return <p style={{ fontWeight: "550" }}>{ID}</p>;
+        return (
+          <div style={{ fontWeight: "500", fontSize: "16px", width: "100px" }}>
+            {ID}
+          </div>
+        );
       },
     },
 
@@ -23,7 +27,9 @@ const Order = () => {
       title: "User",
       dataIndex: "shippingAddress",
       render: (shippingAddress) => (
-        <p style={{ fontWeight: "550" }}>{shippingAddress.fullName}</p>
+        <p style={{ fontWeight: "500", fontSize: "16px" }}>
+          {shippingAddress.fullName}
+        </p>
       ),
     },
 
@@ -39,13 +45,27 @@ const Order = () => {
                 border: "1px solid #ccc",
                 padding: "10px",
                 margin: "10px 0",
+                width: "400px",
+                display: "flex",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
               }}
             >
-              <span>Product: {item.name}</span>
-              <br />
-              <span>Amount: {item.amount}</span>
-              <br />
-              <span>Price: {item.price}</span>
+              <img
+                src={item.image}
+                style={{ height: "100px", width: "100px" }}
+              />
+              <div style={{ marginLeft: "8px" }}>
+                <span style={{ fontSize: "16px" }}>Product: {item.name}</span>
+                <br />
+                <span style={{ fontSize: "16px" }}>
+                  Amount: {numberFormat.format(item.amount)}
+                </span>
+                <br />
+                <span style={{ fontSize: "16px" }}>
+                  Price: {numberFormat.format(item.price)} đ
+                </span>
+              </div>
             </div>
           ))}
         </div>
@@ -54,35 +74,59 @@ const Order = () => {
     {
       title: "Product Price",
       dataIndex: "itemsPrice",
-      render: (itemsPrice) => <p style={{ fontWeight: "550" }}>{itemsPrice}</p>,
+      render: (itemsPrice) => (
+        <p style={{ fontWeight: "500", fontSize: "16px" }}>
+          {numberFormat.format(itemsPrice)} đ
+        </p>
+      ),
     },
 
     {
       title: "Ship Price",
       dataIndex: "shippingPrice",
       render: (shippingPrice) => (
-        <p style={{ fontWeight: "550" }}>{shippingPrice}</p>
+        <p style={{ fontWeight: "500", fontSize: "16px" }}>
+          {numberFormat.format(shippingPrice)} đ
+        </p>
       ),
     },
 
     {
       title: "Total Price",
       dataIndex: "totalPrice",
-      render: (totalPrice) => <p style={{ fontWeight: "550" }}>{totalPrice}</p>,
+      render: (totalPrice) => (
+        <p style={{ fontWeight: "500", fontSize: "16px" }}>
+          {numberFormat.format(totalPrice)} đ
+        </p>
+      ),
     },
 
     {
       title: "Payment Method",
       dataIndex: "paymentMethod",
       render: (paymentMethod) => (
-        <p style={{ fontWeight: "550" }}>{paymentMethod}</p>
+        <p style={{ fontWeight: "500", fontSize: "16px" }}>{paymentMethod}</p>
       ),
     },
 
     {
       title: "Created At",
       dataIndex: "createdAt",
-      render: (text) => <p style={{ fontWeight: "550" }}>{text}</p>,
+      render: (text) => (
+        <div style={{ fontWeight: "500", fontSize: "16px", width: "100px" }}>
+          {text}
+        </div>
+      ),
+    },
+
+    {
+      title: "Status",
+      dataIndex: "isDelivered",
+      render: (isDelivered) => (
+        <p style={{ fontWeight: "500", fontSize: "16px" }}>
+          {isDelivered ? "Delivered" : "Not Delivered"}
+        </p>
+      ),
     },
 
     {

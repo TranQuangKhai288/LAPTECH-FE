@@ -147,31 +147,6 @@ export const deleteAllUserCart = async (id, access_token) => {
   );
   return res.data;
 };
-
-export const addOrderProduct = async (id, cart, access_token) => {
-  try {
-    const res = await axiosJWT.put(
-      `${process.env.REACT_APP_API_URL}/cart-user/${id}`,
-      { cart },
-      {
-        headers: {
-          Authorization: `Bearer ${access_token}`, // Use Authorization header for token
-          //"Content-Type": "application/json",
-        },
-      }
-    );
-
-    if (res.status !== 200) {
-      throw new Error("Failed to update user cart");
-    }
-
-    return res.data;
-  } catch (error) {
-    console.error("Error updating user cart:", error.message);
-    throw error; // You may want to handle the error in your component or return a default value
-  }
-};
-
 export const deleteManyUser = async (data, access_token) => {
   const res = await axiosJWT.post(
     `${process.env.REACT_APP_API_URL}/user/delete-many`,
