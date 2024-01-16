@@ -10,10 +10,8 @@ const cx = classNames.bind(styles);
 const Cart = () => {
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
-  const order = useSelector((state) => state.order);
 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const numberFormat = new Intl.NumberFormat("en-US");
 
   const handlePayment = () => {

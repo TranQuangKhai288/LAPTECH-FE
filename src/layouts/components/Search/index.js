@@ -20,6 +20,7 @@ function Search() {
   const [searchResult, setSearchResult] = useState([]);
   const [showResult, setShowResult] = useState(true);
 
+  const numberFormat = new Intl.NumberFormat("en-US");
   const inputRef = useRef();
 
   // Fetch all products
@@ -89,14 +90,19 @@ function Search() {
           <div className={cx("search-result")} tabIndex="-1" {...attrs}>
             {searchResult.map((result) => (
               <div
+                key={result._id}
                 className={cx("wrapper")}
                 onClick={() => handleDetailProduct(result._id)}
               >
-                <FontAwesomeIcon icon={faMagnifyingGlass} key={result._id} />
                 <div className={cx("info")}>
-                  <h4 className={cx("name")}>
-                    <span>{result.name}</span>
-                  </h4>
+                  <img src={result.image} alt={result.name} width={"100px"} />
+                  <div>
+                    <p>{result.name}</p>
+                    <p style={{ color: "red" }}>
+                      {" "}
+                      {numberFormat.format(result.price)}Đ
+                    </p>
+                  </div>
                 </div>
               </div>
             ))}

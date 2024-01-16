@@ -92,6 +92,10 @@
 .info{
     flex: 1;
     margin-left: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
 }
 
 .name{
