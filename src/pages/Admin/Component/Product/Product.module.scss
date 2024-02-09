@@ -1,8 +1,8 @@
 .container{
-    height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
 }
 
 .add{
@@ -19,6 +19,13 @@
         border: 1px dashed blue;
         color: blue;
     }
+}
+
+.content{
+    display: flex;
+    height: 655px;
+    width: 100%;
+    overflow: scroll;
 }
 .wrapper-button{
     display: flex;
@@ -100,5 +107,4 @@
         cursor: pointer;
     }
 }
-
 

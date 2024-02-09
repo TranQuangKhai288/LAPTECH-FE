@@ -15,7 +15,7 @@ const CardItem = ({ props }) => {
 
   const renderRate = () => {
     let result = [];
-    for (let i = 0; i < parseInt(props.rating); i++) {
+    for (let i = 0; i < parseInt(props.averageRating); i++) {
       result.push(<AiFillStar color="#FFCD00" size="1.5rem" key={i} />);
     }
     return result;

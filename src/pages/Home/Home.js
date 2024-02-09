@@ -7,11 +7,10 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import CardItem from "../../components/CardItem/CardItem";
-import * as OrderService from "../../services/OrderService";
+
 import * as ProductService from "../../services/ProductService";
 import * as UserService from "../../services/UserService";
 import { setCartProduct } from "../../redux/slide/cartSlide";
-import { setOrder } from "../../redux/slide/orderSlide";
 import { useDispatch, useSelector } from "react-redux";
 
 const cx = classNames.bind(styles);

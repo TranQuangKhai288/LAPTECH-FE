@@ -93,6 +93,22 @@ const Product = () => {
     {
       title: "Description",
       dataIndex: "description",
+      render: (description) => (
+        <div
+          style={{
+            overflow: "scroll",
+            display: "-webkit-box",
+            height: "120px",
+            WebkitLineClamp: "2",
+            lineClamp: "2",
+            WebkitBoxOrient: "vertical",
+            fontSize: "1.5rem",
+            fontWeight: "600",
+          }}
+        >
+          {description}
+        </div>
+      ),
     },
     {
       title: "Action",
@@ -511,15 +527,7 @@ const Product = () => {
               name="countInStock"
             />
           </div>
-          <div className={cx("modal-input")}>
-            <p>Rating:</p>
-            <input
-              type="number"
-              value={stateProduct.rating}
-              onChange={handleOnChange}
-              name="rating"
-            />
-          </div>
+
           <div className={cx("modal-input")}>
             <p>Description</p>
             <input
@@ -668,15 +676,7 @@ const Product = () => {
               name="countInStock"
             />
           </div>
-          <div className={cx("modal-input")}>
-            <p>Rating:</p>
-            <input
-              type="number"
-              value={stateProductDetails.rating}
-              onChange={handleOnChangeDetails}
-              name="rating"
-            />
-          </div>
+
           <div className={cx("modal-input")}>
             <p>Description</p>
             <input

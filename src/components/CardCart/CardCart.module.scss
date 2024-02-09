@@ -53,37 +53,39 @@
     align-items: center;
     justify-content: flex-start;
     margin-left: 8px;
-
-    .wrapper-quantity{
+  
+}
+.wrapper-quantity{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    
+    p{
         display: flex;
-        flex-direction: row;
+        flex: 1;
+        left: 0;
+        justify-content: center;
+        align-items: center;
+    
+    }
+    button{
+        display: flex;
+        flex: 1;
         align-items: center;
         justify-content: center;
-        width: 100px;
-        height: 40px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        
-        p{
-            display: flex;
-            flex: 1;
-            left: 0;
-            justify-content: center;
-            align-items: center;
-
-        }
-        button{
-            display: flex;
-            flex: 1;
-            align-items: center;
-            justify-content: center;
-            border: none;
-            background-color: transparent;
-            cursor: pointer;
-        }
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
     }
-    
 }
+
+
+
 
 .total{
     display: flex;

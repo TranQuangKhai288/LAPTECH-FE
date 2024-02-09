@@ -114,7 +114,7 @@ function Search() {
           <input
             ref={inputRef}
             value={searchValue}
-            placeholder="Tìm sản phẩm"
+            placeholder="Find your product..."
             spellCheck={false}
             onChange={handleInputChange}
             onFocus={() => setShowResult(true)}

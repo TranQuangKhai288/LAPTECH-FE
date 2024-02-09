@@ -2,11 +2,6 @@ import React, { useState } from "react";
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faMagnifyingGlass,
-  faUser,
-  faCartShopping,
-} from "@fortawesome/free-solid-svg-icons";
 import Search from "../Search";
 import * as UserService from "../../../services/UserService";
 import { Link, useNavigate } from "react-router-dom";
@@ -17,6 +12,8 @@ import lapTech_logo_3 from "../../../assets/images/lapTech_logo_3.png";
 import { Tooltip } from "react-tippy";
 import { resetUser } from "../../../redux/slide/userSlide";
 import { resetState } from "../../../redux/slide/cartSlide";
+import { adminMenu, guestMenu, userMenu } from "./menuApp";
+import { AiOutlineUser, AiOutlineShoppingCart } from "react-icons/ai";
 
 const cx = classNames.bind(styles);
 
@@ -28,34 +25,25 @@ const Header = () => {
 
   const user = useSelector((state) => state.user);
   const cart = useSelector((state) => state.cart);
-
-  const handleLogin = () => {
-    navigate("/login");
-  };
-  const handleRegister = () => {
-    navigate("/register");
-  };
-
-  const handleProfile = () => {
-    navigate("/profile");
-    setVisible(false);
-  };
   const handleCart = () => {
     navigate("/cart");
     setVisible(false);
   };
-
-  const handleAdmin = () => {
-    navigate("/system/admin");
-    setVisible(false);
-  };
-
   const handleLogout = async () => {
     await UserService.logoutUser();
     dispatch(resetUser());
     dispatch(resetState());
     setVisible(false);
     navigate("/");
+  };
+
+  const handleMenuItemClick = (path) => {
+    if (path) {
+      navigate(path);
+      setVisible(false);
+    } else {
+      handleLogout();
+    }
   };
 
   return (
@@ -74,43 +62,86 @@ const Header = () => {
           >
             <Tooltip
               trigger="click"
-              interactive
               open={visible}
-              position="bottom"
               onRequestClose={() => {
                 setVisible(false);
               }}
               html={
                 <div className={cx("account-tooltip")}>
-                  <div className={cx("item")}>
-                    {user?.isAdmin ? (
-                      <div onClick={handleProfile}>Profile</div>
-                    ) : (
-                      <div onClick={handleCart}>Đơn hàng của tôi</div>
-                    )}
-                  </div>
-                  {/* đăng nhập hoặc hiện tên người dùng */}
-                  <div className={cx("item")}>
-                    {user?.name ? (
-                      <div>
-                        {user?.isAdmin ? (
-                          <div onClick={handleAdmin}>Quản lý hệ thống</div>
-                        ) : (
-                          <div onClick={handleProfile}>Profile</div>
-                        )}
-                      </div>
-                    ) : (
-                      <div onClick={handleLogin}>Đăng Nhập</div>
-                    )}
-                  </div>
-                  {/* đăng ký hoặc đăng xuất */}
-                  <div className={cx("item")}>
-                    {user?.name ? (
-                      <div onClick={handleLogout}>Đăng xuất</div>
-                    ) : (
-                      <div onClick={handleRegister}>Đăng ký</div>
-                    )}
-                  </div>
+                  {user?.isAdmin
+                    ? adminMenu.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className={cx("item")}
+                            onClick={() => handleMenuItemClick(item.path)}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "left",
+                            }}
+                          >
+                            <item.icon
+                              style={{
+                                marginRight: "8px",
+                                marginLeft: "4px",
+                                color: "4f94ca",
+                              }}
+                              size={28}
+                            />
+                            <p className={cx("menu-item")}>{item.name}</p>
+                          </div>
+                        );
+                      })
+                    : user?.id
+                    ? userMenu.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className={cx("item")}
+                            onClick={() => handleMenuItemClick(item.path)}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "left",
+                            }}
+                          >
+                            <item.icon
+                              style={{
+                                marginRight: "8px",
+                                marginLeft: "4px",
+                                color: "4f94ca",
+                              }}
+                              size={28}
+                            />
+                            <p className={cx("menu-item")}>{item.name}</p>
+                          </div>
+                        );
+                      })
+                    : guestMenu.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className={cx("item")}
+                            onClick={() => handleMenuItemClick(item.path)}
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "left",
+                            }}
+                          >
+                            <item.icon
+                              style={{
+                                marginRight: "8px",
+                                marginLeft: "4px",
+                                color: "4f94ca",
+                              }}
+                              size={28}
+                            />
+                            <p className={cx("menu-item")}>{item.name}</p>
+                          </div>
+                        );
+                      })}
                 </div>
               }
             >
@@ -120,11 +151,23 @@ const Header = () => {
                   alignItems: "center",
                 }}
               >
-                <FontAwesomeIcon
-                  icon={faUser}
-                  style={{ marginRight: "16px" }}
-                />
-                {user?.name ? <div>{user?.name}</div> : <div>Tài Khoản</div>}
+                {user?.avatar ? (
+                  <img
+                    alt="avatar"
+                    src={user.avatar}
+                    width="40px"
+                    height="40px"
+                    style={{ borderRadius: "50%", marginRight: "4px" }}
+                  />
+                ) : (
+                  <AiOutlineUser
+                    size={28}
+                    style={{
+                      marginRight: "8px",
+                    }}
+                  />
+                )}
+                {user?.name ? <div>{user?.name}</div> : <div>Account</div>}
               </div>
             </Tooltip>
           </div>
@@ -152,12 +195,15 @@ const Header = () => {
               ) : (
                 <></>
               )}
-              <FontAwesomeIcon
-                icon={faCartShopping}
-                style={{ marginRight: "16px" }}
+              <AiOutlineShoppingCart
+                size={24}
+                style={{
+                  marginRight: "12px",
+                  marginTop: "4px",
+                }}
               />
             </div>
-            <div>Đơn hàng</div>
+            <div>My Cart</div>
           </div>
         </div>
       </div>

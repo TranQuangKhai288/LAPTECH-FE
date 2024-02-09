@@ -116,7 +116,7 @@ const routes = [
   {
     path: config.routes.admin,
     component: Admin,
-    layout: HeaderOnly,
+    layout: Nothing,
     isPrivate: true,
   },
 ];

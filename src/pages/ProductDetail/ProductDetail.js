@@ -121,8 +121,15 @@ const ProductDetail = () => {
     };
     fetchData();
   }, []);
-  console.log("recommendedProducts", recommendedProducts);
+  const renderRate = () => {
+    let result = [];
+    for (let i = 0; i < parseInt(detailProduct.averageRating); i++) {
+      result.push(<AiFillStar color="#FFCD00" size="1.5rem" key={i} />);
+    }
+    return result;
+  };
 
+  console.log("detailProduct", detailProduct);
   return (
     <div className={cx("container")}>
       <div className={cx("container-content")}>
@@ -152,14 +159,16 @@ const ProductDetail = () => {
                     marginLeft: "8px",
                   }}
                 >
-                  <AiFillStar color="yellow" size="2rem" />
-                  <AiFillStar color="yellow" size="2rem" />
-                  <AiFillStar color="yellow" size="2rem" />
-                  <AiFillStar color="yellow" size="2rem" />
-                  <AiFillStar color="yellow" size="2rem" />
+                  {renderRate()}
                 </div>
 
-                <span style={{ marginLeft: "8px" }}>0 đánh giá</span>
+                <span style={{ marginLeft: "8px" }}>
+                  {!detailProduct.comment_and_rating?.length ? (
+                    <span>0 đánh giá</span>
+                  ) : (
+                    detailProduct.comment_and_rating.length + " đánh giá"
+                  )}
+                </span>
               </div>
             </div>
             <div className={cx("price")}>
@@ -205,14 +214,12 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-
       <div className={cx("container-description")}>
         <p style={{ fontSize: "18px" }}>Mô tả sản phẩm</p>
         <div className={cx("description")}>
           <p>{detailProduct.description}</p>
         </div>
       </div>
-
       <div className={cx("another-product")}>
         <p>Sản phẩm bạn có thể quan tâm</p>
         <div className={cx("items-wrapper")}>
@@ -252,7 +259,6 @@ const ProductDetail = () => {
           </Swiper>
         </div>
       </div>
-
       <div className={cx("container-comments")}>
         <p style={{ fontSize: "18px" }}>Đánh giá và nhận xét</p>
         <div className={cx("product-review")}>
