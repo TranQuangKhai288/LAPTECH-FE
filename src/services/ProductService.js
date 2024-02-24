@@ -76,3 +76,10 @@ export const getAllTypeProduct = async () => {
   );
   return res.data;
 };
+
+export const getCommentAndRating = async (id) => {
+  const res = await axios.get(
+    `${process.env.REACT_APP_API_URL}/product/get-comment-and-rating/${id}`
+  );
+  return res.data;
+};

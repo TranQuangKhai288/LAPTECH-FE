@@ -8,8 +8,7 @@ import { Link, useNavigate } from "react-router-dom";
 import config from "../../../config";
 import { useSelector, useDispatch } from "react-redux";
 import lapTech_logo_3 from "../../../assets/images/lapTech_logo_3.png";
-
-import { Tooltip } from "react-tippy";
+import { Popover } from "antd";
 import { resetUser } from "../../../redux/slide/userSlide";
 import { resetState } from "../../../redux/slide/cartSlide";
 import { adminMenu, guestMenu, userMenu } from "./menuApp";
@@ -54,96 +53,71 @@ const Header = () => {
         </Link>
         <Search />
         <div className={cx("actions")}>
-          <div
-            className={cx("user")}
-            onClick={() => {
-              setVisible(true);
-            }}
-          >
-            <Tooltip
-              trigger="click"
-              open={visible}
-              onRequestClose={() => {
-                setVisible(false);
-              }}
-              html={
-                <div className={cx("account-tooltip")}>
-                  {user?.isAdmin
-                    ? adminMenu.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className={cx("item")}
-                            onClick={() => handleMenuItemClick(item.path)}
+          <div className={cx("user")}>
+            <Popover
+              content={
+                user?.isAdmin
+                  ? adminMenu.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className={cx("item")}
+                          onClick={() => handleMenuItemClick(item.path)}
+                        >
+                          <item.icon
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "left",
+                              marginRight: "8px",
+                              marginLeft: "4px",
+                              color: "4f94ca",
                             }}
-                          >
-                            <item.icon
-                              style={{
-                                marginRight: "8px",
-                                marginLeft: "4px",
-                                color: "4f94ca",
-                              }}
-                              size={28}
-                            />
-                            <p className={cx("menu-item")}>{item.name}</p>
-                          </div>
-                        );
-                      })
-                    : user?.id
-                    ? userMenu.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className={cx("item")}
-                            onClick={() => handleMenuItemClick(item.path)}
+                            size={28}
+                          />
+                          <p className={cx("menu-item")}>{item.name}</p>
+                        </div>
+                      );
+                    })
+                  : user?.id
+                  ? userMenu.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className={cx("item")}
+                          onClick={() => handleMenuItemClick(item.path)}
+                        >
+                          <item.icon
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "left",
+                              marginRight: "8px",
+                              marginLeft: "4px",
+                              color: "4f94ca",
                             }}
-                          >
-                            <item.icon
-                              style={{
-                                marginRight: "8px",
-                                marginLeft: "4px",
-                                color: "4f94ca",
-                              }}
-                              size={28}
-                            />
-                            <p className={cx("menu-item")}>{item.name}</p>
-                          </div>
-                        );
-                      })
-                    : guestMenu.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className={cx("item")}
-                            onClick={() => handleMenuItemClick(item.path)}
+                            size={28}
+                          />
+                          <p className={cx("menu-item")}>{item.name}</p>
+                        </div>
+                      );
+                    })
+                  : guestMenu.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className={cx("item")}
+                          onClick={() => handleMenuItemClick(item.path)}
+                        >
+                          <item.icon
                             style={{
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "left",
+                              marginRight: "8px",
+                              marginLeft: "4px",
+                              color: "4f94ca",
                             }}
-                          >
-                            <item.icon
-                              style={{
-                                marginRight: "8px",
-                                marginLeft: "4px",
-                                color: "4f94ca",
-                              }}
-                              size={28}
-                            />
-                            <p className={cx("menu-item")}>{item.name}</p>
-                          </div>
-                        );
-                      })}
-                </div>
+                            size={28}
+                          />
+                          <p className={cx("menu-item")}>{item.name}</p>
+                        </div>
+                      );
+                    })
               }
+              trigger="click"
+              placement="bottom"
             >
               <div
                 style={{
@@ -169,7 +143,7 @@ const Header = () => {
                 )}
                 {user?.name ? <div>{user?.name}</div> : <div>Account</div>}
               </div>
-            </Tooltip>
+            </Popover>
           </div>
           <div className={cx("cart")} onClick={handleCart}>
             <div>

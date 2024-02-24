@@ -13,10 +13,15 @@ const App = () => {
 
   useEffect(() => {
     const { storageData, decoded } = handleDecoded();
-    if (decoded?.id) {
+    if (decoded?.id && isTokenExpired(decoded) === false) {
       handleGetDetailsUser(decoded.id, storageData);
     }
   }, []);
+
+  const isTokenExpired = (decodedToken) => {
+    const currentTime = Date.now() / 1000;
+    return decodedToken.exp < currentTime;
+  };
 
   const handleDecoded = () => {
     let storageData =

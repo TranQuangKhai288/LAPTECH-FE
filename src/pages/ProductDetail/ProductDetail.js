@@ -13,11 +13,14 @@ import * as UserService from "../../services/UserService";
 import { useDispatch, useSelector } from "react-redux";
 import { addtoCart } from "../../redux/slide/cartSlide";
 import { useMutationHook } from "../../hooks/useMutationHook";
+import Star from "../../components/Star/Star";
+import CommentItem from "../../components/CommentItem/CommentItem";
 const cx = classNames.bind(styles);
 
 const ProductDetail = () => {
   const [quantity, setQuantity] = useState(1);
   const [detailProduct, setDetailProduct] = useState({});
+  const [comment, setComment] = useState([]);
   const [recommendedProducts, setRecommendedProducts] = useState([]);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -48,9 +51,21 @@ const ProductDetail = () => {
       console.log("error", error);
     }
   };
+
+  const fetchGetCommentAndRating = async (id) => {
+    try {
+      const res = await ProductService.getCommentAndRating(id);
+      if (res?.data) {
+        setComment(res?.data);
+      }
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
   useEffect(() => {
     if (id) {
       fetchGetDetailsProduct(id);
+      fetchGetCommentAndRating(id);
     }
   }, [id]);
 
@@ -121,15 +136,7 @@ const ProductDetail = () => {
     };
     fetchData();
   }, []);
-  const renderRate = () => {
-    let result = [];
-    for (let i = 0; i < parseInt(detailProduct.averageRating); i++) {
-      result.push(<AiFillStar color="#FFCD00" size="1.5rem" key={i} />);
-    }
-    return result;
-  };
-
-  console.log("detailProduct", detailProduct);
+  console.log(comment, "comment");
   return (
     <div className={cx("container")}>
       <div className={cx("container-content")}>
@@ -156,10 +163,10 @@ const ProductDetail = () => {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    marginLeft: "8px",
+                    marginLeft: "10px",
                   }}
                 >
-                  {renderRate()}
+                  <Star stars={detailProduct.averageRating} size={"1.8rem"} />
                 </div>
 
                 <span style={{ marginLeft: "8px" }}>
@@ -264,13 +271,22 @@ const ProductDetail = () => {
         <div className={cx("product-review")}>
           <div className={cx("product-review-average")}>
             <div>
-              <p style={{ fontSize: "28px", color: "red" }}>0/5</p>
+              <p style={{ fontSize: "28px", color: "red" }}>
+                {!detailProduct.averageRating
+                  ? 0
+                  : detailProduct.averageRating.toFixed(2) + "/5"}
+              </p>
             </div>
-            <div style={{ marginTop: "8px" }}>
-              <p>rating</p>
-            </div>
+            <Star stars={detailProduct.averageRating} size={"1.8rem"} />
             <div>
-              <p>0 đánh giá & nhận xét</p>
+              <p>
+                {!detailProduct.comment_and_rating?.length ? (
+                  <span>0 đánh giá & nhận xét</span>
+                ) : (
+                  detailProduct.comment_and_rating.length +
+                  " đánh giá & nhận xét"
+                )}
+              </p>
             </div>
           </div>
           <div className={cx("product-review-detail")}>
@@ -334,6 +350,13 @@ const ProductDetail = () => {
                 }}
               />
             </div>
+          </div>
+        </div>
+        <div className={cx("product-comment")}>
+          <div>
+            {comment.map((item) => (
+              <CommentItem props={item} />
+            ))}
           </div>
         </div>
       </div>

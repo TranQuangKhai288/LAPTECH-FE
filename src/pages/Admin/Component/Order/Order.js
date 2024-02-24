@@ -2,14 +2,28 @@ import React, { useEffect, useState } from "react";
 import styles from "./Order.module.scss";
 import classNames from "classnames/bind";
 import * as OrderService from "../../../../services/OrderService";
+import { useSelector } from "react-redux";
 import * as AiIcons from "react-icons/ai";
-import { Table } from "antd";
+import "react-tippy/dist/tippy.css";
+import { useMutationHook } from "../../../../hooks/useMutationHook";
+import { Popover, Table } from "antd";
 
 const cx = classNames.bind(styles);
 
 const Order = () => {
+  const user = useSelector((state) => state.user);
   const [Data, setData] = useState([]);
+  const [Status, setStatus] = useState("Not Delivered");
+  const statusList = ["Delivered", "Not Delivered"];
   const numberFormat = new Intl.NumberFormat("en-US");
+
+  const mutation = useMutationHook((data) => {
+    const { id, access_token, ...rests } = data;
+    OrderService.updateStatusOrder(id, rests, access_token);
+  });
+
+  const { isLoading, isSuccess, isError } = mutation;
+
   const columns = [
     {
       title: "Order ID",
@@ -122,23 +136,72 @@ const Order = () => {
     {
       title: "Status",
       dataIndex: "isDelivered",
-      render: (isDelivered) => (
-        <p style={{ fontWeight: "500", fontSize: "16px" }}>
-          {isDelivered ? "Delivered" : "Not Delivered"}
-        </p>
-      ),
-    },
-
-    {
-      title: "Action",
-      render: (text, record) => (
+      render: (isDelivered, record) => (
         <div>
-          <AiIcons.AiOutlineDelete className={cx("AiIcons")} color="red" />
-          <AiIcons.AiOutlineEdit className={cx("AiIcons")} color="#F0E68C" />
+          <Popover
+            content={
+              <div>
+                {statusList.map((item, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "flex-start",
+                      padding: "8px 0",
+                    }}
+                  >
+                    <p
+                      className={cx("item-poper")}
+                      style={{
+                        color: isDelivered ? "green" : "red",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => handleStatusChange(record._id, item)}
+                    >
+                      {item}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            }
+            trigger="click"
+          >
+            <p
+              style={{
+                fontWeight: "500",
+                fontSize: "16px",
+                cursor: "pointer",
+                color: isDelivered ? "green" : "red",
+              }}
+            >
+              {isDelivered ? "Delivered" : "Not Delivered"}
+            </p>
+          </Popover>
         </div>
       ),
     },
   ];
+  useEffect(() => {
+    if (isSuccess) {
+      alert("Update status successfully");
+      console.log(mutation);
+    }
+  }, [isSuccess]);
+
+  const handleStatusChange = async (orderId, newStatus) => {
+    let isDelivered = false;
+    if (newStatus === "Delivered") {
+      isDelivered = true;
+    } else {
+      isDelivered = false;
+    }
+    mutation.mutate({
+      id: orderId,
+      isDelivered,
+      access_token: user?.access_token,
+    });
+  };
 
   //Fetch ALL data
   const fetchOrderAll = async () => {
@@ -154,6 +217,7 @@ const Order = () => {
       try {
         const result = await fetchOrderAll();
         setData(result.data);
+
         console.log("data", result.data);
       } catch (error) {
         console.log("error", error);

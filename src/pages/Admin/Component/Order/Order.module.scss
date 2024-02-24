@@ -40,4 +40,19 @@ span{
     }
 }
 
-
+.item-poper{
+    display: flex;
+    align-items: flex-end;
+    justify-content: flex-start;
+    font-weight: 600;
+    font-size: 18px;
+    border-bottom: 1px solid #dddde3;
+    margin: 0;
+    padding: 0 8px;
+    width: 140px;
+    height: 40px;
+    &:hover{
+        cursor: pointer;
+        background-color: #dddde3;
+    }
+}

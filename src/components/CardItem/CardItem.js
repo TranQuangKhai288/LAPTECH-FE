@@ -3,6 +3,7 @@ import styles from "./CardItem.module.scss";
 import classNames from "classnames/bind";
 import { useNavigate } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
+import Star from "../Star/Star";
 
 const cx = classNames.bind(styles);
 
@@ -12,15 +13,6 @@ const CardItem = ({ props }) => {
   const handleDetailProduct = (id) => {
     navigate(`/productdetail/${id}`);
   };
-
-  const renderRate = () => {
-    let result = [];
-    for (let i = 0; i < parseInt(props.averageRating); i++) {
-      result.push(<AiFillStar color="#FFCD00" size="1.5rem" key={i} />);
-    }
-    return result;
-  };
-
   const numberFormat = new Intl.NumberFormat("en-US");
 
   return (
@@ -40,7 +32,9 @@ const CardItem = ({ props }) => {
       </div>
       <div className={cx("info")}>
         <div className={cx("name")}>{props.name}</div>
-        <div className={cx("rate")}>{renderRate()}</div>
+        <div className={cx("rate")}>
+          <Star stars={props.averageRating} size={"1.8rem"} />
+        </div>
         <p className={cx("price")}> {numberFormat.format(props.price)}đ </p>
       </div>
     </div>

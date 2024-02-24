@@ -73,7 +73,7 @@ export const logoutUser = async () => {
 
 export const updateUser = async (id, data, access_token) => {
   console.log("data", data);
-  const res = await axiosJWT.post(
+  const res = await axiosJWT.put(
     `${process.env.REACT_APP_API_URL}/user/update-user/${id}`,
     data,
     {
@@ -151,6 +151,19 @@ export const deleteAllUserCart = async (id, access_token) => {
 export const deleteManyUser = async (data, access_token) => {
   const res = await axiosJWT.post(
     `${process.env.REACT_APP_API_URL}/user/delete-many`,
+    data,
+    {
+      headers: {
+        token: `Bearer ${access_token}`,
+      },
+    }
+  );
+  return res.data;
+};
+
+export const postCommentAndRating = async (id, data, access_token) => {
+  const res = await axiosJWT.post(
+    `${process.env.REACT_APP_API_URL}/user/post-comment-and-rating/${id}`,
     data,
     {
       headers: {
