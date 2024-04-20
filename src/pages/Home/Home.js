@@ -19,6 +19,8 @@ const Home = () => {
   const [products, setProducts] = useState([]);
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  console.log("access token", user?.access_token);
+  console.log("refresh token", user?.refreshToken);
 
   const fetchProductAll = async () => {
     try {

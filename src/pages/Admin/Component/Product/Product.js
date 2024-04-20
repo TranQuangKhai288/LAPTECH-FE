@@ -211,8 +211,8 @@ const Product = () => {
   useEffect(() => {
     if (isSuccess && mutation.data.status === "OK") {
       alert("Thêm sản phẩm thành công");
-      console.log(mutation.data.status);
-      window.location.reload();
+      console.log("mutation.data.data", mutation.data.data);
+      setData((prevData) => [...prevData, mutation.data.data]);
     } else if (isError) {
       alert(mutation.data);
     } else if (
@@ -222,6 +222,10 @@ const Product = () => {
       alert("Mã sản phẩm đã tồn tại");
     }
   }, [isSuccess, isError]);
+
+  useEffect(() => {
+    console.log("Data update", Data);
+  }, [Data]);
 
   const handleOkAddProduct = () => {
     console.log("stateProduct", stateProduct);

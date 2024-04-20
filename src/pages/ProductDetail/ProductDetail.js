@@ -144,18 +144,11 @@ const ProductDetail = () => {
           <div className={cx("image")}>
             <img src={detailProduct.image} alt="linkien" />
           </div>
-          <div className={cx("list-image")}>
-            <img src={detailProduct.image} alt="detailProduct1" />
-            <img src={detailProduct.image} alt="detailProduct2" />
-            <img src={detailProduct.image} alt="detailProduct3" />
-            <img src={detailProduct.image} alt="detailProduct4" />
-            <img src={detailProduct.image} alt="detailProduct5" />
-          </div>
         </div>
         <div className={cx("container-info")}>
           <div className={cx("base-info")}>
             <div className={cx("name")}>
-              <p>{detailProduct.name}</p>
+              <p id="productName">{detailProduct.name}</p>
             </div>
             <div className={cx("rate")}>
               <div style={{ display: "flex", alignItems: "center" }}>
@@ -179,19 +172,21 @@ const ProductDetail = () => {
               </div>
             </div>
             <div className={cx("price")}>
-              <p>{numberFormat.format(detailProduct.price)} VNĐ</p>
+              <p id="productPrice">
+                {numberFormat.format(detailProduct.price)} VNĐ
+              </p>
             </div>
-          </div>
-          <div className={cx("option-info")}>
-            <p>Option 1</p>
-            <p>Option 2</p>
           </div>
           <div className={cx("quantity")}>
             <p>Số lượng</p>
             <div className={cx("quantity-wrapper")}>
-              <button onClick={handleDown}>-</button>
-              <p>{quantity}</p>
-              <button onClick={handleUp}>+</button>
+              <button onClick={handleDown} id="descreaseBtn">
+                -
+              </button>
+              <p id="quantityNumber">{quantity}</p>
+              <button onClick={handleUp} id="increaseBtn">
+                +
+              </button>
             </div>
           </div>
 
@@ -204,6 +199,7 @@ const ProductDetail = () => {
                 justifyContent: "center",
                 margin: "0px",
               }}
+              id="buyNowbtn"
             >
               MUA NGAY
             </p>

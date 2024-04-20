@@ -32,7 +32,6 @@ export const userSlide = createSlice({
         city = "",
         refreshToken = "",
       } = action.payload;
-      console.log("action.payload", action);
       state.name = name ? name : state.name;
       state.email = email ? email : state.email;
       state.address = address ? address : state.address;

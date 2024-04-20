@@ -196,11 +196,15 @@ const Order = () => {
     } else {
       isDelivered = false;
     }
-    mutation.mutate({
-      id: orderId,
+    const res = await OrderService.updateStatusOrder(orderId, {
       isDelivered,
       access_token: user?.access_token,
     });
+    console.log("Update status success:", res);
+    if (res.status === "OK") {
+      const result = await fetchOrderAll();
+      setData(result.data);
+    }
   };
 
   //Fetch ALL data
@@ -217,8 +221,6 @@ const Order = () => {
       try {
         const result = await fetchOrderAll();
         setData(result.data);
-
-        console.log("data", result.data);
       } catch (error) {
         console.log("error", error);
       }
