@@ -136,7 +136,6 @@ const ProductDetail = () => {
     };
     fetchData();
   }, []);
-  console.log(comment, "comment");
   return (
     <div className={cx("container")}>
       <div className={cx("container-content")}>
